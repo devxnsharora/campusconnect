@@ -1,5 +1,5 @@
 // API Configuration
-const API_BASE_URL = 'http://localhost:5000/api';
+const API_BASE_URL = 'https://campusconnect-backend-hvyv.onrender.com/api';
 
 // Toast Notification Function
 function showToast(message, type = 'success') {

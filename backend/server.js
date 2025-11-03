@@ -10,7 +10,10 @@ const app = express();
 connectDB();
 
 // Middleware
-app.use(cors());
+app.use(cors({
+  origin: ['https://incredible-pavlova-796d34.netlify.app/', 'http://localhost:8000','https://campusconnectfront.netlify.app/'],
+  credentials: true
+}));
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 
@@ -41,10 +44,7 @@ app.use((err, req, res, next) => {
   });
 });
 
-app.use(cors({
-  origin: ['https://campusconnect.netlify.app', 'http://localhost:8000'],
-  credentials: true
-}));
+
 
 
 // Start server
