@@ -11,7 +11,7 @@ connectDB();
 
 // Middleware
 app.use(cors({
-  origin: ['https://incredible-pavlova-796d34.netlify.app/', 'http://localhost:8000','https://campusconnectfront.netlify.app/'],
+  origin: ['http://localhost:8000','https://campusconnect-orpin.vercel.app/'],
   credentials: true
 }));
 app.use(express.json());
