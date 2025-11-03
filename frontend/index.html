@@ -1,0 +1,200 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>CampusConnect - Student Collaboration Portal</title>
+    <link rel="stylesheet" href="css/style.css">
+</head>
+<body>
+    <!-- Toast Notification -->
+    <div id="toast" class="toast"></div>
+
+    <!-- Navigation -->
+    <nav class="navbar">
+        <div class="nav-container">
+            <div class="nav-brand">
+                <span class="logo">📚</span>
+                <span class="brand-name">CampusConnect</span>
+            </div>
+            <div class="nav-actions" id="navActions">
+                <button class="btn btn-outline" onclick="logout()">Logout</button>
+            </div>
+        </div>
+    </nav>
+
+    <!-- Auth Section (Login/Register) -->
+    <section id="authSection" class="auth-section">
+        <div class="auth-container">
+            <div class="auth-card">
+                <div class="auth-header">
+                    <h1>Welcome to CampusConnect</h1>
+                    <p>Your campus collaboration hub</p>
+                </div>
+
+                <!-- Auth Tabs -->
+                <div class="auth-tabs">
+                    <button class="auth-tab active" onclick="switchAuthTab('login')">Login</button>
+                    <button class="auth-tab" onclick="switchAuthTab('register')">Register</button>
+                </div>
+
+                <!-- Login Form -->
+                <form id="loginForm" class="auth-form">
+                    <div class="form-group">
+                        <label>Email</label>
+                        <input type="email" id="loginEmail" placeholder="your.email@university.edu" required>
+                    </div>
+                    <div class="form-group">
+                        <label>Password</label>
+                        <input type="password" id="loginPassword" placeholder="Enter your password" required>
+                    </div>
+                    <button type="submit" class="btn btn-primary btn-block">Login</button>
+                    <p class="auth-demo">Demo: john@university.edu / pass123</p>
+                </form>
+
+                <!-- Register Form -->
+                <form id="registerForm" class="auth-form" style="display: none;">
+                    <div class="form-group">
+                        <label>Username</label>
+                        <input type="text" id="registerUsername" placeholder="Choose a username" required>
+                    </div>
+                    <div class="form-group">
+                        <label>Email</label>
+                        <input type="email" id="registerEmail" placeholder="your.email@university.edu" required>
+                    </div>
+                    <div class="form-group">
+                        <label>Password</label>
+                        <input type="password" id="registerPassword" placeholder="Min 6 characters" required>
+                    </div>
+                    <div class="form-row">
+                        <div class="form-group">
+                            <label>Major</label>
+                            <input type="text" id="registerMajor" placeholder="Computer Science">
+                        </div>
+                        <div class="form-group">
+                            <label>Year</label>
+                            <select id="registerYear">
+                                <option value="1">1st Year</option>
+                                <option value="2">2nd Year</option>
+                                <option value="3">3rd Year</option>
+                                <option value="4">4th Year</option>
+                            </select>
+                        </div>
+                    </div>
+                    <button type="submit" class="btn btn-primary btn-block">Register</button>
+                </form>
+            </div>
+        </div>
+    </section>
+
+    <!-- Main App Section -->
+    <section id="appSection" class="app-section" style="display: none;">
+        <div class="container">
+            <!-- User Info Bar -->
+            <div class="user-info-bar">
+                <div class="user-info">
+                    <img id="userAvatar" src="" alt="Avatar" class="user-avatar">
+                    <div>
+                        <h3 id="userName">Loading...</h3>
+                        <p id="userDetails">Loading...</p>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Create Post Card -->
+            <div class="create-post-card">
+                <h2>✍️ Create New Post</h2>
+                <form id="createPostForm">
+                    <div class="form-group">
+                        <input type="text" id="postTitle" placeholder="Post Title" required>
+                    </div>
+                    <div class="form-group">
+                        <textarea id="postContent" placeholder="What's on your mind?" rows="4" required></textarea>
+                    </div>
+                    <div class="form-row">
+                        <div class="form-group">
+                            <select id="postCategory">
+                                <option value="General">📌 General</option>
+                                <option value="Study">📚 Study</option>
+                                <option value="Events">🎉 Events</option>
+                                <option value="Projects">💻 Projects</option>
+                                <option value="Help">❓ Help</option>
+                            </select>
+                        </div>
+                        <div class="form-group">
+                            <input type="text" id="postTags" placeholder="Tags (comma separated)">
+                        </div>
+                    </div>
+                    <button type="submit" class="btn btn-primary">Post</button>
+                </form>
+            </div>
+
+            <!-- Filters -->
+            <div class="filters-bar">
+                <div class="filter-group">
+                    <label>Category:</label>
+                    <select id="categoryFilter" onchange="loadPosts()">
+                        <option value="All">All</option>
+                        <option value="General">General</option>
+                        <option value="Study">Study</option>
+                        <option value="Events">Events</option>
+                        <option value="Projects">Projects</option>
+                        <option value="Help">Help</option>
+                    </select>
+                </div>
+                <div class="filter-group">
+                    <input type="text" id="searchInput" placeholder="🔍 Search posts..." onkeyup="searchPosts()">
+                </div>
+            </div>
+
+            <!-- Posts Feed -->
+            <div id="postsFeed" class="posts-feed">
+                <div class="loading">Loading posts...</div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Edit Post Modal -->
+    <div id="editModal" class="modal">
+        <div class="modal-content">
+            <span class="modal-close" onclick="closeEditModal()">&times;</span>
+            <h2>Edit Post</h2>
+            <form id="editPostForm">
+                <input type="hidden" id="editPostId">
+                <div class="form-group">
+                    <label>Title</label>
+                    <input type="text" id="editPostTitle" required>
+                </div>
+                <div class="form-group">
+                    <label>Content</label>
+                    <textarea id="editPostContent" rows="5" required></textarea>
+                </div>
+                <div class="form-row">
+                    <div class="form-group">
+                        <label>Category</label>
+                        <select id="editPostCategory">
+                            <option value="General">General</option>
+                            <option value="Study">Study</option>
+                            <option value="Events">Events</option>
+                            <option value="Projects">Projects</option>
+                            <option value="Help">Help</option>
+                        </select>
+                    </div>
+                    <div class="form-group">
+                        <label>Tags</label>
+                        <input type="text" id="editPostTags">
+                    </div>
+                </div>
+                <div class="modal-actions">
+                    <button type="button" class="btn btn-outline" onclick="closeEditModal()">Cancel</button>
+                    <button type="submit" class="btn btn-primary">Update Post</button>
+                </div>
+            </form>
+        </div>
+    </div>
+
+    <script src="js/api.js"></script>
+    <script src="js/auth.js"></script>
+    <script src="js/posts.js"></script>
+</body>
+</html>
