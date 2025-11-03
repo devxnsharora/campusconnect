@@ -11,7 +11,7 @@ connectDB();
 
 // Middleware
 app.use(cors({
-  origin: ['http://localhost:8000','https://campusconnect-orpin.vercel.app/'],
+  origin: ['http://localhost:8000','https://campusconnect-orpin.vercel.app'],
   credentials: true
 }));
 app.use(express.json());
