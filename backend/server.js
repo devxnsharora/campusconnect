@@ -41,6 +41,12 @@ app.use((err, req, res, next) => {
   });
 });
 
+app.use(cors({
+  origin: ['https://campusconnect.netlify.app', 'http://localhost:8000'],
+  credentials: true
+}));
+
+
 // Start server
 const PORT = process.env.PORT || 5000;
 app.listen(PORT, () => {
